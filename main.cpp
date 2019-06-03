@@ -15,6 +15,7 @@
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
+#include "Cube.h"
 
 #define MARKER_SIZE 0.048 // size of AR marker [m]
 #define THRESH 87   // threshold for fiding contours
@@ -291,7 +292,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 }
 
 int main(int argc, char* argv[]) {
-	
+  
 	cv::VideoCapture cap;
 
 	GLFWwindow* window;
