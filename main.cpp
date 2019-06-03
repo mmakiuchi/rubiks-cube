@@ -16,6 +16,9 @@
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
 
+#define MARKER_SIZE 0.048 // size of AR marker [m]
+#define THRESH 87   // threshold for fiding contours
+#define BW_THRESH 95    // threshold for getting values of AR marker
 
 // Added in Exercise 9 - Start *****************************************************************
 
@@ -325,13 +328,9 @@ int main(int argc, char* argv[]) {
     // setup OpenCV
 	cv::Mat img_bgr;
 	InitializeVideoStream(cap);
-  #if __APPLE__
-    const double kMarkerSize = 0.48;// [m]
-    MarkerTracker markerTracker(kMarkerSize, 87,95);
-  #else
-    const double kMarkerSize = 0.03;// [m]
-    MarkerTracker markerTracker(kMarkerSize);
-  #endif
+    
+    const double kMarkerSize = MARKER_SIZE;
+    MarkerTracker markerTracker(kMarkerSize, THRESH, BW_THRESH);
 	
 	std::vector<Marker> markers;
 //	float resultMatrix[16];
