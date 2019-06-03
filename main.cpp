@@ -17,7 +17,7 @@
 #include "DrawPrimitives.h"
 
 #define MARKER_SIZE 0.048 // size of AR marker [m]
-#define THRESH 87   // threshold for fiding contours
+#define THRESH 87   // threshold for finding contours
 #define BW_THRESH 95    // threshold for getting values of AR marker
 
 // Added in Exercise 9 - Start *****************************************************************
