@@ -15,6 +15,7 @@
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
+#include "Cube.h"
 
 
 // Added in Exercise 9 - Start *****************************************************************
@@ -288,7 +289,7 @@ void reshape( GLFWwindow* window, int width, int height ) {
 }
 
 int main(int argc, char* argv[]) {
-	
+  
 	cv::VideoCapture cap;
 
 	GLFWwindow* window;
