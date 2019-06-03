@@ -1,4 +1,6 @@
-
+#if __APPLE__
+  #define GL_SILENCE_DEPRECATION
+#endif
 #define GLFW_INCLUDE_GLU
 #include <glfw/glfw3.h>
 //#include <GL/glew.h>
@@ -32,8 +34,14 @@ int ballspeed = 100;
 // Added in Exercise 9 - End *****************************************************************
 
 //camera settings
-const int camera_width  = 640;
-const int camera_height = 480;
+#if __APPLE__
+  const int camera_width  = 1280;
+  const int camera_height = 720;
+#else
+  const int camera_width  = 640;
+  const int camera_height = 480;
+#endif
+
 const int virtual_camera_angle = 30;
 unsigned char bkgnd[camera_width*camera_height*3];
 
@@ -178,7 +186,12 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
     gluOrtho2D( 0.0, camera_width, 0.0, camera_height );
 
     glRasterPos2i( 0, camera_height-1 );
-    glDrawPixels( camera_width, camera_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd );
+    #if __APPLE__
+      glDrawPixels( camera_width, camera_height, GL_BGR, GL_UNSIGNED_BYTE, bkgnd );
+    #else
+      glDrawPixels( camera_width, camera_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd );
+    #endif
+
 
     glPopMatrix();
 
@@ -222,6 +235,12 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr, std::vector<Marker> &ma
 	for (int x=0; x<4; ++x)
 		for (int y=0; y<4; ++y)
 			resultTransposedMatrix[x*4+y] = resultMatrix_0272[y*4+x];
+
+  #if __APPLE__
+    float scale = 0.3;
+    resultTransposedMatrix[12] *= scale;
+    resultTransposedMatrix[13] *= scale;
+  #endif
 
 	glLoadMatrixf( resultTransposedMatrix );
 	
@@ -306,8 +325,13 @@ int main(int argc, char* argv[]) {
     // setup OpenCV
 	cv::Mat img_bgr;
 	InitializeVideoStream(cap);
-	const double kMarkerSize = 0.03;// 0.048; // [m]
-	MarkerTracker markerTracker(kMarkerSize);
+  #if __APPLE__
+    const double kMarkerSize = 0.48;// [m]
+    MarkerTracker markerTracker(kMarkerSize, 87,95);
+  #else
+    const double kMarkerSize = 0.03;// [m]
+    MarkerTracker markerTracker(kMarkerSize);
+  #endif
 	
 	std::vector<Marker> markers;
 //	float resultMatrix[16];

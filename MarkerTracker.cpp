@@ -62,7 +62,11 @@ bool MarkerTracker::checkContourCondition(const Contour &contour_approx, const c
 
 	// Filter bad contours
 	const int kImageSize = image_bgr.rows*image_bgr.cols;
-	const int kMarkerSizeMin = (int)(kImageSize*0.01);
+  #if __APPLE__
+	  const int kMarkerSizeMin = (int)(kImageSize*0.001);
+  #else
+    const int kMarkerSizeMin = (int)(kImageSize*0.01);
+  #endif
 	const int kMarkerSizeMax = (int)(kImageSize*0.99);
 	const bool is_contour_valid = (marker_size > kMarkerSizeMin)
 		&& (marker_size < kMarkerSizeMax)
@@ -119,8 +123,9 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
 	ContourHierarchy hierarchy;
 	cv::findContours(image_gray_filtered, contours, hierarchy, cv::RETR_LIST, cv::CHAIN_APPROX_SIMPLE);
 
-	for each (auto contour in contours)
+  for(int idx = 0; idx < contours.size(); idx++)
 	{
+    std::vector<cv::Point> contour = contours.at(idx);
 		// Approximate a contour
 		const auto kEpsilon = 0.05*cv::arcLength(contour, true);
 		Contour contour_approx;
@@ -391,7 +396,11 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
 		cv::warpPerspective(image_gray, iplMarker, projMat, cv::Size(6, 6));
 		
 
-		const int bw_thresh = 55;
+    #if __APPLE__
+      const int bw_thresh = 95;
+    #else
+		  const int bw_thresh = 55;
+    #endif
 		cv::threshold(iplMarker, iplMarker, bw_thresh, 255, cv::THRESH_BINARY);
 		//now we have a B/W image of a supposed Marker
 
@@ -440,16 +449,16 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
 			int col = i % 4;
 
 			codes[0] <<= 1;
-			codes[0] |= cP[row][col]; // 0‹
+			codes[0] |= cP[row][col]; // 0ï¿½ï¿½
 
 			codes[1] <<= 1;
-			codes[1] |= cP[3 - col][row]; // 90‹
+			codes[1] |= cP[3 - col][row]; // 90ï¿½ï¿½
 
 			codes[2] <<= 1;
-			codes[2] |= cP[3 - row][3 - col]; // 180‹
+			codes[2] |= cP[3 - row][3 - col]; // 180ï¿½ï¿½
 
 			codes[3] <<= 1;
-			codes[3] |= cP[col][3 - row]; // 270‹
+			codes[3] |= cP[col][3 - row]; // 270ï¿½ï¿½
 		}
 
 		if ((codes[0] == 0) || (codes[0] == 0xffff)) {
