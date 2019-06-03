@@ -14,4 +14,5 @@ public:
   void turnFront(const int &n);
   std::array<std::array<int, 4>, 6> toFacelet();
   void print();
+  void shuffle();
 };

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <random>
 
 #include "Cube.h"
 
@@ -67,6 +68,26 @@ void Cube::turnUp(const int &n) {
   std::copy(new_perm.begin(), new_perm.end(), perm.begin());
   std::copy(new_orient.begin(), new_orient.end(), orient.begin());
 };
+
+
+/**
+ * Shuffle the cube
+ */
+void Cube::shuffle() {
+  std::random_device rnd;
+  for(int i = 0; i < 6; i++) {
+    int j = i + (rnd() % (7-i));
+    int tmp = perm[i];
+    perm[i] = perm[j];
+    perm[j] = tmp;
+  }
+  int sum = 0;
+  for(int i = 0; i < 6; i++) {
+    orient[i] = rnd() % 3;
+    sum += orient[i];
+  }
+  orient[6] = 3 - sum % 3;
+}
 
 /**
  * Returns the representation of colors of facelets
