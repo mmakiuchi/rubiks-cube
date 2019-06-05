@@ -235,8 +235,16 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 			resultTransposedMatrix[x * 4 + y] = resultMatrix_005A[y * 4 + x];
 	// Added in Exercise 9 - End *****************************************************************
 
+  
+#if __APPLE__
+	float scale = 0.3;
+	resultTransposedMatrix[12] *= scale;
+	resultTransposedMatrix[13] *= scale;
+#endif
 		//glLoadTransposeMatrixf( resultMatrix );
 	glLoadMatrixf(resultTransposedMatrix);
+
+
 	drawCube(cube_facelet);
 
 
@@ -249,11 +257,6 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 		//for (int y = 0; y < 4; ++y)
 			//resultTransposedMatrix[x * 4 + y] = resultMatrix_0272[y * 4 + x];
 
-#if __APPLE__
-	float scale = 0.3;
-	resultTransposedMatrix[12] *= scale;
-	resultTransposedMatrix[13] *= scale;
-#endif
 
 	//glLoadMatrixf(resultTransposedMatrix);
 
