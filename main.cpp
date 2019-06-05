@@ -5,9 +5,12 @@
 #define GL_SILENCE_DEPRECATION
 #endif
 
-// #include <glfw/glfw3.h>
-#include <glfw3.h> //changed directory
-#include <freeglut.h> //added here to work with Windows (please comment)
+#if __APPLE__
+  #include <GLFW/glfw3.h>
+#else 
+  #include <glfw3.h> //changed directory
+  #include <freeglut.h> //added here to work with Windows (please comment)
+#endif
 //#include <GL/glew.h>
 
 #include <iostream>
@@ -232,8 +235,16 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 			resultTransposedMatrix[x * 4 + y] = resultMatrix_005A[y * 4 + x];
 	// Added in Exercise 9 - End *****************************************************************
 
+  
+#if __APPLE__
+	float scale = 0.3;
+	resultTransposedMatrix[12] *= scale;
+	resultTransposedMatrix[13] *= scale;
+#endif
 		//glLoadTransposeMatrixf( resultMatrix );
 	glLoadMatrixf(resultTransposedMatrix);
+
+
 	drawCube(cube_facelet);
 
 
@@ -246,11 +257,6 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 		//for (int y = 0; y < 4; ++y)
 			//resultTransposedMatrix[x * 4 + y] = resultMatrix_0272[y * 4 + x];
 
-#if __APPLE__
-	float scale = 0.3;
-	resultTransposedMatrix[12] *= scale;
-	resultTransposedMatrix[13] *= scale;
-#endif
 
 	//glLoadMatrixf(resultTransposedMatrix);
 

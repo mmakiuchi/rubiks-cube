@@ -1,6 +1,10 @@
 
 #define GLFW_INCLUDE_GLU
+#if __APPLE__
+#include <GLFW/glfw3.h>
+#else
 #include <glfw3.h>
+#endif
 //#include <GL/gl.h>
 
 #include <math.h>
