@@ -5,9 +5,12 @@
 #define GL_SILENCE_DEPRECATION
 #endif
 
-// #include <glfw/glfw3.h>
-#include <glfw3.h> //changed directory
-#include <freeglut.h> //added here to work with Windows (please comment)
+#if __APPLE__
+  #include <GLFW/glfw3.h>
+#else 
+  #include <glfw3.h> //changed directory
+  #include <freeglut.h> //added here to work with Windows (please comment)
+#endif
 //#include <GL/glew.h>
 
 #include <iostream>
