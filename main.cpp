@@ -25,9 +25,16 @@
 #include "DrawPrimitives.h"
 #include "Cube.h"
 
+
 #define MARKER_SIZE 0.048 // size of AR marker [m]
-#define THRESH 87   // threshold for finding contours
-#define BW_THRESH 95    // threshold for getting values of AR marker
+
+// change here for your PC configuration
+#define SCALE 0.45 //Mari
+#define THRESH 138 // Mari
+#define BW_THRESH 146 // Mari
+
+//#define THRESH 87   // threshold for finding contours
+//#define BW_THRESH 95    // threshold for getting values of AR marker
 
 // Added in Exercise 9 - Start *****************************************************************
 
@@ -236,11 +243,9 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 	// Added in Exercise 9 - End *****************************************************************
 
   
-#if __APPLE__
-	float scale = 0.3;
+	float scale = SCALE;
 	resultTransposedMatrix[12] *= scale;
 	resultTransposedMatrix[13] *= scale;
-#endif
 		//glLoadTransposeMatrixf( resultMatrix );
 	glLoadMatrixf(resultTransposedMatrix);
 
