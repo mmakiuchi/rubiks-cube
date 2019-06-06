@@ -1,6 +1,10 @@
 
 #define GLFW_INCLUDE_GLU
+#if __APPLE__
+#include <GLFW/glfw3.h>
+#else
 #include <glfw3.h>
+#endif
 //#include <GL/gl.h>
 
 #include <math.h>
@@ -67,6 +71,7 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	float orange[] = { 1.0, 0.5, 0.0 };
 
 	std::map<int, float*> colorLookupTable;
+	int color_index;
 
 	//lookup table to correlate the cube_facelet mapping with the colors
 	colorLookupTable[0] = yellow;
@@ -231,15 +236,9 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	/// DRAW THE SIDES OF THE CUBE
 	// Upper side (facelet 2)
 	glBegin(GL_POLYGON);
-	glColor3f(white[0], white[1], white[2]);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glVertex3f(0, 0, -max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor3f(red[0], red[1], red[2]);
+	// glColor3f(red[0], red[1], red[2]);
+	color_index = cube_facelet[2][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, 0, -max_vertex);
 	glVertex3f(0, max_vertex, -max_vertex);
 	glVertex3f(-max_vertex, max_vertex, -max_vertex);
@@ -247,7 +246,8 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(yellow[0], yellow[1], yellow[2]);
+	color_index = cube_facelet[2][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(-max_vertex, 0, -max_vertex);
 	glVertex3f(0, 0, -max_vertex);
 	glVertex3f(0, -max_vertex, -max_vertex);
@@ -255,24 +255,28 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(orange[0], orange[1], orange[2]);
+	color_index = cube_facelet[2][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, 0, -max_vertex);
 	glVertex3f(max_vertex, 0, -max_vertex);
 	glVertex3f(max_vertex, -max_vertex, -max_vertex);
 	glVertex3f(0, -max_vertex, -max_vertex);
 	glEnd();
 
-	// Side A (facelet 0)
 	glBegin(GL_POLYGON);
-	glColor3f(yellow[0], yellow[1], yellow[2]);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
+	color_index = cube_facelet[2][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, 0, 0);
-	glVertex3f(max_vertex, -max_vertex, 0);
+	glVertex3f(max_vertex, max_vertex, -max_vertex);
+	glVertex3f(0, max_vertex, -max_vertex);
+	glVertex3f(0, 0, -max_vertex);
 	glEnd();
 
+
+	// Side A (facelet 0)
 	glBegin(GL_POLYGON);
-	glColor3f(red[0], red[1], red[2]);
+	color_index = cube_facelet[0][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(max_vertex, 0, -max_vertex);
 	glVertex3f(max_vertex, max_vertex, -max_vertex);
 	glVertex3f(max_vertex, max_vertex, 0);
@@ -280,7 +284,17 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(green[0], green[1], green[2]);
+	color_index = cube_facelet[0][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, -max_vertex, -max_vertex);
+	glVertex3f(max_vertex, 0, -max_vertex);
+	glVertex3f(max_vertex, 0, 0);
+	glVertex3f(max_vertex, -max_vertex, 0);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[0][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(max_vertex, -max_vertex, 0);
 	glVertex3f(max_vertex, 0, 0);
 	glVertex3f(max_vertex, 0, max_vertex);
@@ -288,7 +302,8 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(blue[0], blue[1], blue[2]);
+	color_index = cube_facelet[0][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(max_vertex, 0, 0);
 	glVertex3f(max_vertex, max_vertex, 0);
 	glVertex3f(max_vertex, max_vertex, max_vertex);
@@ -297,23 +312,26 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 
 	// Side B (facelet 1)
 	glBegin(GL_POLYGON);
-	glColor3f(blue[0], blue[1], blue[2]);
-	glVertex3f(0, max_vertex, 0);
-	glVertex3f(0, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor3f(green[0], green[1], green[2]);
+	color_index = cube_facelet[1][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, max_vertex, 0);
 	glVertex3f(0, max_vertex, max_vertex);
 	glVertex3f(-max_vertex, max_vertex, max_vertex);
 	glVertex3f(-max_vertex, max_vertex, 0);
 	glEnd();
-
+	
 	glBegin(GL_POLYGON);
-	glColor3f(white[0], white[1], white[2]);
+	color_index = cube_facelet[1][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, max_vertex, 0);
+	glVertex3f(0, max_vertex, -max_vertex);
+	glVertex3f(-max_vertex, max_vertex, -max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 0);
+	glEnd();
+	
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[1][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, max_vertex, 0);
 	glVertex3f(max_vertex, max_vertex, 0);
 	glVertex3f(max_vertex, max_vertex, -max_vertex);
@@ -321,16 +339,18 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(yellow[0], yellow[1], yellow[2]);
+	color_index = cube_facelet[1][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, max_vertex, 0);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, 0);
+	glVertex3f(0, max_vertex, max_vertex);
+	glVertex3f(max_vertex, max_vertex, max_vertex);
+	glVertex3f(max_vertex, max_vertex, 0);
 	glEnd();
 
 	// Side C (facelet 5)
 	glBegin(GL_POLYGON);
-	glColor3f(red[0], red[1], red[2]);
+	color_index = cube_facelet[5][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(-max_vertex, 0, 0);
 	glVertex3f(-max_vertex, 0, max_vertex);
 	glVertex3f(-max_vertex, max_vertex, max_vertex);
@@ -338,15 +358,8 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(yellow[0], yellow[1], yellow[2]);
-	glVertex3f(-max_vertex, 0, 0);
-	glVertex3f(-max_vertex, max_vertex, 0);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor3f(white[0], white[1], white[2]);
+	color_index = cube_facelet[5][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(-max_vertex, 0, 0);
 	glVertex3f(-max_vertex, -max_vertex, 0);
 	glVertex3f(-max_vertex, -max_vertex, max_vertex);
@@ -354,16 +367,45 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(orange[0], orange[1], orange[2]);
+	color_index = cube_facelet[5][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(-max_vertex, 0, 0);
 	glVertex3f(-max_vertex, 0, -max_vertex);
 	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
 	glVertex3f(-max_vertex, -max_vertex, 0);
 	glEnd();
 
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[5][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, 0);
+	glVertex3f(-max_vertex, max_vertex, 0);
+	glVertex3f(-max_vertex, max_vertex, -max_vertex);
+	glVertex3f(-max_vertex, 0, -max_vertex);
+	glEnd();
+
 	// Side D (facelet 3)
 	glBegin(GL_POLYGON);
-	glColor3f(orange[0], orange[1], orange[2]);
+	color_index = cube_facelet[3][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 0);
+	glVertex3f(0, -max_vertex, -max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 0);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[3][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 0);
+	glVertex3f(-max_vertex, -max_vertex, 0);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[3][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, -max_vertex, 0);
 	glVertex3f(0, -max_vertex, max_vertex);
 	glVertex3f(max_vertex, -max_vertex, max_vertex);
@@ -371,48 +413,27 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(blue[0], blue[1], blue[2]);
+	color_index = cube_facelet[3][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, -max_vertex, 0);
 	glVertex3f(max_vertex, -max_vertex, 0);
 	glVertex3f(max_vertex, -max_vertex, -max_vertex);
 	glVertex3f(0, -max_vertex, -max_vertex);
 	glEnd();
 
-	glBegin(GL_POLYGON);
-	glColor3f(red[0], red[1], red[2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor3f(white[0], white[1], white[2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glEnd();
-
 	// Bottom (facelet 4)
 	glBegin(GL_POLYGON);
-	glColor3f(green[0], green[1], green[2]);
-	glVertex3f(0, 0, max_vertex);
-	glVertex3f(0, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	glColor3f(green[0], green[1], green[2]);
-	glVertex3f(0, 0, max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	color_index = cube_facelet[4][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, max_vertex );
 	glVertex3f(0, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, 0, max_vertex);
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(blue[0], blue[1], blue[2]);
+	color_index = cube_facelet[4][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, 0, max_vertex);
 	glVertex3f(-max_vertex, 0, max_vertex);
 	glVertex3f(-max_vertex, max_vertex, max_vertex);
@@ -420,11 +441,23 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glEnd();
 
 	glBegin(GL_POLYGON);
-	glColor3f(orange[0], orange[1], orange[2]);
+	color_index = cube_facelet[4][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
 	glVertex3f(0, 0, max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, 0, max_vertex);
+	glVertex3f(0, max_vertex , max_vertex );
+	glVertex3f(max_vertex, max_vertex, max_vertex);
+	glVertex3f(max_vertex, 0, max_vertex);
 	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[4][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, max_vertex);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glEnd();
+
+
 }
 // Added in Exercise 9 - End *****************************************************************
