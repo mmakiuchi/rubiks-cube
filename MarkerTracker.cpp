@@ -62,7 +62,7 @@ bool MarkerTracker::checkContourCondition(const Contour &contour_approx, const c
 
 	// Filter bad contours
 	const int kImageSize = image_bgr.rows*image_bgr.cols;
-	const int kMarkerSizeMin = (int)(kImageSize*0.01);
+	const int kMarkerSizeMin = (int)(kImageSize*0.001);
 	const int kMarkerSizeMax = (int)(kImageSize*0.99);
 	const bool is_contour_valid = (marker_size > kMarkerSizeMin)
 		&& (marker_size < kMarkerSizeMax)
@@ -85,10 +85,10 @@ void MarkerTracker::init()
 
 	int max = 255;
 	int slider_value = 100;
-	cv::createTrackbar( "Threshold", kWinName2, &slider_value, 255, trackbarHandler, &slider_value);
+	cv::createTrackbar( "Threshold", kWinName2, &thresh, 255, trackbarHandler, &slider_value);
 
 	int bw_sileder_value = bw_thresh;
-	cv::createTrackbar( "BW Threshold", kWinName2, &slider_value, 255, bw_trackbarHandler, &bw_sileder_value);
+	cv::createTrackbar( "BW Threshold", kWinName2, &bw_thresh, 255, bw_trackbarHandler, &bw_sileder_value);
 	
 }
 
