@@ -392,8 +392,7 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
 		//change the perspective in the marker image using the previously calculated matrix
 		cv::warpPerspective(image_gray, iplMarker, projMat, cv::Size(6, 6));
 		
-
-		const int bw_thresh = 55;
+        
 		cv::threshold(iplMarker, iplMarker, bw_thresh, 255, cv::THRESH_BINARY);
 		//now we have a B/W image of a supposed Marker
 
