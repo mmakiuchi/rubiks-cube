@@ -57,12 +57,11 @@ void solidCone(GLdouble base, GLdouble height, GLint slices, GLint stacks)
 	glEnd();
 }
 
-// Added in Exercise 9 - Start *****************************************************************
-void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
-{
-	float max_vertex = 0.01; //defines the size of the cube
+void showCube(std::array<std::array<int, 4>, 6>& cube_facelet, int n1, int n2, int n3, int n4, int n5, int n6){
 
-	// definition of openGL colors
+	float max_vertex = 0.015; //defines the size of the cube
+
+// definition of openGL colors
 	float yellow[] = { 1.0, 1.0, 0.0 };
 	float blue[] = { 0.0, 0.0, 1.0 };
 	float red[] = { 1.0, 0.0, 0.0 };
@@ -82,11 +81,65 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	colorLookupTable[5] = orange;
 
 	/// Draw the black lines of rubik's cube
-	// Draw corners
+// Draw corners
 	glBegin(GL_LINES);
 	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
 	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, max_vertex);
 	glEnd();
 
 	glBegin(GL_LINES);
@@ -101,363 +154,365 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet)
 	glVertex3f(-max_vertex, max_vertex, max_vertex);
 	glEnd();
 
+	//
 	glBegin(GL_LINES);
 	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, max_vertex, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glEnd();
-
-	// Lines of upper side
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(-max_vertex, -0, -max_vertex);
-	glEnd();
-
-	// Lines of Side A
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glEnd();
-
-	// Lines of side B
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(0, max_vertex, -max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
 	glVertex3f(0, max_vertex, max_vertex);
 	glEnd();
 
 	glBegin(GL_LINES);
 	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glVertex3f(-max_vertex, max_vertex, 0);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(-max_vertex, -0, max_vertex);
 	glEnd();
 
-	// Lines of side C
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glVertex3f(-max_vertex, max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(-max_vertex, 0, max_vertex);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glEnd();
-
-	// Lines of side D
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_LINES);
-	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glEnd();
-
-	// Lines of the bottom
+	//
 	glBegin(GL_LINES);
 	glColor3f(0.0, 0.0, 0.0);
 	glVertex3f(max_vertex, 0, max_vertex);
-	glVertex3f(-max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
 	glEnd();
 
 	glBegin(GL_LINES);
 	glColor3f(0.0, 0.0, 0.0);
-	glVertex3f(0, max_vertex, max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
+	glVertex3f(max_vertex, max_vertex, 2*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
 	glEnd();
+
+	//
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(0, max_vertex, max_vertex);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	//
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glVertex3f(-max_vertex, 0, max_vertex);
+	glEnd();
+
+	//
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glEnd();
+
+	//
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_LINES);
+	glColor3f(0.0, 0.0, 0.0);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glEnd();
+
 
 	/// DRAW THE SIDES OF THE CUBE
-	// Upper side (facelet 2)
+		// Upper side (facelet 2)
 	glBegin(GL_POLYGON);
 	// glColor3f(red[0], red[1], red[2]);
-	color_index = cube_facelet[2][0];
+	color_index = cube_facelet[n1][0];
 	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, -max_vertex);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[2][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glVertex3f(0, 0, -max_vertex);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[2][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, -max_vertex);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[2][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glVertex3f(0, 0, -max_vertex);
-	glEnd();
-
-
-	// Side A (facelet 0)
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[0][0];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glVertex3f(max_vertex, 0, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[0][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(max_vertex, 0, -max_vertex);
-	glVertex3f(max_vertex, 0, 0);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[0][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glVertex3f(max_vertex, 0, 0);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[0][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(max_vertex, 0, 0);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glEnd();
-
-	// Side B (facelet 1)
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[1][0];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, max_vertex, 0);
+	glVertex3f(0, 0, max_vertex);
 	glVertex3f(0, max_vertex, max_vertex);
 	glVertex3f(-max_vertex, max_vertex, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, 0);
+	glVertex3f(-max_vertex, 0, max_vertex);
 	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n1][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, max_vertex);
+	glVertex3f(0, 0, max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n1][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, max_vertex);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n1][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, max_vertex, max_vertex);
+	glVertex3f(0, max_vertex, max_vertex);
+	glVertex3f(0, 0, max_vertex);
+	glEnd();
+
+
+	// facelet 0
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n2][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, max_vertex, max_vertex);
+	glVertex3f(max_vertex, max_vertex, 2*max_vertex);
+	glVertex3f(max_vertex, 0, 2*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n2][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glVertex3f(max_vertex, 0, max_vertex);
+	glVertex3f(max_vertex, 0, 2* max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n2][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, 0, 2* max_vertex);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n2][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(max_vertex, 0, 2* max_vertex);
+	glVertex3f(max_vertex, max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
+	glEnd();
+
+	// facelet 1
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n3][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, max_vertex, 2* max_vertex);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n3][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, max_vertex, 2* max_vertex);
+	glVertex3f(0, max_vertex, max_vertex);
+	glVertex3f(-max_vertex, max_vertex, max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n3][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, max_vertex, max_vertex);
+	glVertex3f(0, max_vertex, max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n3][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, max_vertex, 2* max_vertex);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	// facelet 5
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n4][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, 2* max_vertex);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n4][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, 2* max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n4][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, 2* max_vertex);
+	glVertex3f(-max_vertex, 0, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n4][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(-max_vertex, 0, 2* max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, max_vertex, max_vertex);
+	glVertex3f(-max_vertex, 0, max_vertex);
+	glEnd();
+
+	// facelet 3
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n5][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 2* max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n5][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n5][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 2* max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n5][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, -max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 2* max_vertex);
+	glVertex3f(max_vertex, -max_vertex, max_vertex);
+	glVertex3f(0, -max_vertex, max_vertex);
+	glEnd();
+
+	// facelet 4
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n6][0];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, 3*max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n6][1];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, 3*max_vertex);
+	glVertex3f(-max_vertex, 0, 3*max_vertex);
+	glVertex3f(-max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n6][2];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, 3*max_vertex);
+	glVertex3f(0, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, max_vertex, 3*max_vertex);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
+	glEnd();
+
+	glBegin(GL_POLYGON);
+	color_index = cube_facelet[n6][3];
+	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
+	glVertex3f(0, 0, 3*max_vertex);
+	glVertex3f(max_vertex, 0, 3*max_vertex);
+	glVertex3f(max_vertex, -max_vertex, 3*max_vertex);
+	glVertex3f(0, -max_vertex, 3*max_vertex);
+	glEnd();
+}
+
+// Added in Exercise 9 - Start ****************************************************************
+void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet, Marker marker)
+{
+	int marker_code = marker.code;
+
+	/// MARKERS CODES (on which marker the facelet is projected)
+	// facelet 0				// facelet 4				// facelet 1
+	// 0x272 = 626				// 0x690 = 1680				// 0xB44 = 2884
+	// 0 0 0 0					// 0 0 0 0					// 0 0 0 0
+	// 0 0 1 0					// 0 1 1 0					// 1 0 1 1
+	// 0 1 1 1					// 1 0 0 1					// 0 1 0 0
+	// 0 0 1 0					// 0 0 0 0					// 0 1 0 0
 	
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[1][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, max_vertex, 0);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, max_vertex, 0);
-	glEnd();
-	
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[1][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, max_vertex, 0);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glVertex3f(max_vertex, max_vertex, -max_vertex);
-	glVertex3f(0, max_vertex, -max_vertex);
-	glEnd();
+	// facelet 2				// facelet 3				// facelet 5
+	// 0x5A = 90				// 0x1C44 =	7236			// 0x1228 = 4648
+	// 0 0 0 0					// 0 0 0 1					// 0 0 0 1
+	// 0 0 0 0					// 1 1 0 0					// 0 0 1 0
+	// 0 1 0 1					// 0 1 0 0					// 0 0 1 0
+	// 1 0 1 0					// 0 1 0 0					// 1 0 0 0
 
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[1][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, max_vertex, 0);
-	glVertex3f(0, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, max_vertex, 0);
-	glEnd();
+	float m_x, m_y, m_z;
+	//same values printed with marker.print_matrix()
+	m_x = marker.resultMatrix[1];
+	m_y = marker.resultMatrix[6];
+	m_z = marker.resultMatrix[11];
 
-	// Side C (facelet 5)
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[5][0];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(-max_vertex, 0, 0);
-	glVertex3f(-max_vertex, 0, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[5][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(-max_vertex, 0, 0);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, 0, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[5][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(-max_vertex, 0, 0);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[5][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(-max_vertex, 0, 0);
-	glVertex3f(-max_vertex, max_vertex, 0);
-	glVertex3f(-max_vertex, max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, 0, -max_vertex);
-	glEnd();
-
-	// Side D (facelet 3)
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[3][0];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[3][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, 0);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[3][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[3][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, -max_vertex, 0);
-	glVertex3f(max_vertex, -max_vertex, 0);
-	glVertex3f(max_vertex, -max_vertex, -max_vertex);
-	glVertex3f(0, -max_vertex, -max_vertex);
-	glEnd();
-
-	// Bottom (facelet 4)
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[4][0];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, max_vertex );
-	glVertex3f(0, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, -max_vertex, max_vertex);
-	glVertex3f(-max_vertex, 0, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[4][1];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, max_vertex);
-	glVertex3f(-max_vertex, 0, max_vertex);
-	glVertex3f(-max_vertex, max_vertex, max_vertex);
-	glVertex3f(0, max_vertex, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[4][2];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, max_vertex);
-	glVertex3f(0, max_vertex , max_vertex );
-	glVertex3f(max_vertex, max_vertex, max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glEnd();
-
-	glBegin(GL_POLYGON);
-	color_index = cube_facelet[4][3];
-	glColor3f(colorLookupTable[color_index][0], colorLookupTable[color_index][1], colorLookupTable[color_index][2]);
-	glVertex3f(0, 0, max_vertex);
-	glVertex3f(max_vertex, 0, max_vertex);
-	glVertex3f(max_vertex, -max_vertex, max_vertex);
-	glVertex3f(0, -max_vertex, max_vertex);
-	glEnd();
+	if (marker_code == 90) {
+		showCube(cube_facelet, 2, 0, 1, 5, 3, 4);
+	}
+	else {
+		if (marker_code == 626) {
+			showCube(cube_facelet, 0, 3, 4, 1, 2, 5);
+		}
+		else {
+			if (marker_code == 1680) {
+				showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
+			}
+			else {
+				if (marker_code == 2884) {
+					showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
+				}
+				else {
+					if (marker_code == 7236) {
+						showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
+					}
+					else {
+						if (marker_code == 4648) {
+							showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check
+						}
+					}
+				}
+			}
+		}
+	}
 
 
 }
-// Added in Exercise 9 - End *****************************************************************

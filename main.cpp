@@ -30,11 +30,11 @@
 
 // change here for your PC configuration
 #define SCALE 0.45 //Mari
-#define THRESH 138 // Mari
-#define BW_THRESH 146 // Mari
+//#define THRESH 138 // Mari
+//#define BW_THRESH 146 // Mari
 
-//#define THRESH 87   // threshold for finding contours
-//#define BW_THRESH 95    // threshold for getting values of AR marker
+#define THRESH 87   // threshold for finding contours
+#define BW_THRESH 95    // threshold for getting values of AR marker
 
 // Added in Exercise 9 - Start *****************************************************************
 
@@ -222,37 +222,42 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 	glMatrixMode(GL_MODELVIEW);
 
 	// Added in Exercise 9 - Start *****************************************************************
-	float resultMatrix_005A[16];
-	float resultMatrix_0272[16];
+	//float resultMatrix_005A[16];
+	//float resultMatrix_0272[16];
+	float resultMatrix_anyMarker[16];
 	for (int i = 0; i < markers.size(); i++) {
 		const int code = markers[i].code;
-		if (code == 0x005a) {
+		for (int j = 0; j < 16; j++)
+			resultMatrix_anyMarker[j] = markers[i].resultMatrix[j];
+		/*if (code == 0x005a) {
 			for (int j = 0; j < 16; j++)
 				resultMatrix_005A[j] = markers[i].resultMatrix[j];
 		}
 		else if (code == 0x0272) {
 			for (int j = 0; j < 16; j++)
 				resultMatrix_0272[j] = markers[i].resultMatrix[j];
-		}
+		}*/
 	}
 
 
 	for (int x = 0; x < 4; ++x)
 		for (int y = 0; y < 4; ++y)
-			resultTransposedMatrix[x * 4 + y] = resultMatrix_005A[y * 4 + x];
+			resultTransposedMatrix[x * 4 + y] = resultMatrix_anyMarker[y * 4 + x];
 	// Added in Exercise 9 - End *****************************************************************
 
   
 	float scale = SCALE;
 	resultTransposedMatrix[12] *= scale;
 	resultTransposedMatrix[13] *= scale;
-		//glLoadTransposeMatrixf( resultMatrix );
+	//glLoadTransposeMatrixf( resultMatrix );
 	glLoadMatrixf(resultTransposedMatrix);
 
-
-	drawCube(cube_facelet);
-
-
+	// draw the cube only if there is an identified marker
+	if (!markers.empty()) {
+		// send the cube side colors and the identified marker
+		drawCube(cube_facelet, markers.at(0));
+	}
+		
 	// Added in Exercise 9 - Start *****************************************************************
 	//rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
 
