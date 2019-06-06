@@ -5,7 +5,7 @@
 #include "Cube.h"
 
 Cube::Cube() {
-  perm = {0,1,2,3,4,5,6};
+  perm = {0,1,2,3,4,5,6,7};
   orient = {0,0,0,0,0,0,0};
 };
 
@@ -14,11 +14,31 @@ Cube::Cube() {
  * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
  */
 void Cube::turnRight(const int &n) {
-  std::array<int, 7> new_perm, new_orient;
+  std::array<int, 8> new_perm, new_orient;
   std::copy(perm.begin(), perm.end(), new_perm.begin());
   std::copy(orient.begin(), orient.end(), new_orient.begin());
 
-  int rotation[4] = {5, 4, 1, 2};
+  int rotation[4] = {6, 5, 1, 2};
+  int orient_delta[4] = {0, 1, 0, 1};
+  for(int i = 0; i < 4; i++) {
+    new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
+    new_orient[rotation[i]] = (orient[rotation[(i + n) % 4]] - orient_delta[(i + n) % 4] + orient_delta[i] + 3) % 3;
+  }
+
+  std::copy(new_perm.begin(), new_perm.end(), perm.begin());
+  std::copy(new_orient.begin(), new_orient.end(), orient.begin());
+};
+
+/**
+ * Turns left face 
+ * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
+ */
+void Cube::turnLeft(const int &n) {
+  std::array<int, 8> new_perm, new_orient;
+  std::copy(perm.begin(), perm.end(), new_perm.begin());
+  std::copy(orient.begin(), orient.end(), new_orient.begin());
+
+  int rotation[4] = {4, 7, 3, 0};
   int orient_delta[4] = {0, 1, 0, 1};
   for(int i = 0; i < 4; i++) {
     new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
@@ -34,11 +54,32 @@ void Cube::turnRight(const int &n) {
  * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
  */
 void Cube::turnFront(const int &n) {
-  std::array<int, 7> new_perm, new_orient;
+  std::array<int, 8> new_perm, new_orient;
   std::copy(perm.begin(), perm.end(), new_perm.begin());
   std::copy(orient.begin(), orient.end(), new_orient.begin());
 
-  int rotation[4] = {1, 4, 3, 0};
+  int rotation[4] = {1, 5, 4, 0};
+  int orient_delta[4] = {0, 2, 0, 2};
+  for(int i = 0; i < 4; i++) {
+    new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
+    new_orient[rotation[i]] = (orient[rotation[(i + n) % 4]] - orient_delta[(i + n) % 4] + orient_delta[i] + 3) % 3;
+  }
+
+
+  std::copy(new_perm.begin(), new_perm.end(), perm.begin());
+  std::copy(new_orient.begin(), new_orient.end(), orient.begin());
+};
+
+/**
+ * Turns back face 
+ * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
+ */
+void Cube::turnBack(const int &n) {
+  std::array<int, 8> new_perm, new_orient;
+  std::copy(perm.begin(), perm.end(), new_perm.begin());
+  std::copy(orient.begin(), orient.end(), new_orient.begin());
+
+  int rotation[4] = {6, 2, 3, 7};
   int orient_delta[4] = {0, 2, 0, 2};
   for(int i = 0; i < 4; i++) {
     new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
@@ -55,11 +96,30 @@ void Cube::turnFront(const int &n) {
  * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
  */
 void Cube::turnUp(const int &n) {
-  std::array<int, 7> new_perm, new_orient;
+  std::array<int, 8> new_perm, new_orient;
   std::copy(perm.begin(), perm.end(), new_perm.begin());
   std::copy(orient.begin(), orient.end(), new_orient.begin());
 
-  int rotation[4] = {3, 4, 5, 6};
+  int rotation[4] = {4, 5, 6, 7};
+  for(int i = 0; i < 4; i++) {
+    new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
+    new_orient[rotation[i]] = orient[rotation[(i + n) % 4]];
+  }
+
+  std::copy(new_perm.begin(), new_perm.end(), perm.begin());
+  std::copy(new_orient.begin(), new_orient.end(), orient.begin());
+};
+
+/**
+ * Turns down face 
+ * @param &n if n=1, turn 90 degrees clockwise, if n=2, turn 180 degrees, if n=3, turn 90 degrees anti-clockwise,
+ */
+void Cube::turnDown(const int &n) {
+  std::array<int, 8> new_perm, new_orient;
+  std::copy(perm.begin(), perm.end(), new_perm.begin());
+  std::copy(orient.begin(), orient.end(), new_orient.begin());
+
+  int rotation[4] = {3, 2, 1, 0};
   for(int i = 0; i < 4; i++) {
     new_perm[rotation[i]] = perm[rotation[(i + n) % 4]];
     new_orient[rotation[i]] = orient[rotation[(i + n) % 4]];
@@ -75,18 +135,18 @@ void Cube::turnUp(const int &n) {
  */
 void Cube::shuffle() {
   std::random_device rnd;
-  for(int i = 0; i < 6; i++) {
-    int j = i + (rnd() % (7-i));
+  for(int i = 0; i < 7; i++) {
+    int j = i + (rnd() % (8-i));
     int tmp = perm[i];
     perm[i] = perm[j];
     perm[j] = tmp;
   }
   int sum = 0;
-  for(int i = 0; i < 6; i++) {
+  for(int i = 0; i < 7; i++) {
     orient[i] = rnd() % 3;
     sum += orient[i];
   }
-  orient[6] = 3 - sum % 3;
+  orient[7] = 3 - sum % 3;
 }
 
 /**
@@ -114,10 +174,11 @@ void Cube::shuffle() {
  *                 *---------------*
  */
 std::array<std::array<int, 4>, 6> Cube::toFacelet() {
-  int mapper[7][3] = {
+  int mapper[8][3] = {
     {0, 1, 2},
     {0, 2, 3},
     {0, 3, 4},
+    {0, 4, 1},
     {5, 2, 1},
     {5, 3, 2},
     {5, 4, 3},
@@ -128,32 +189,33 @@ std::array<std::array<int, 4>, 6> Cube::toFacelet() {
   res[0][0] = mapper[perm[0]][orient[0]];
   res[0][1] = mapper[perm[1]][orient[1]];
   res[0][2] = mapper[perm[2]][orient[2]];
-  res[0][3] = 0;
+  res[0][3] = mapper[perm[3]][orient[3]];
 
-  res[1][0] = mapper[perm[6]][(orient[6]+1) % 3];
-  res[1][1] = mapper[perm[3]][(orient[3]+2) % 3];
+  res[1][0] = mapper[perm[7]][(orient[7]+1) % 3];
+  res[1][1] = mapper[perm[4]][(orient[4]+2) % 3];
   res[1][2] = mapper[perm[0]][(orient[0]+1) % 3];
-  res[1][3] = 1;
+  res[1][3] = mapper[perm[3]][(orient[3]+2) % 3];
 
-  res[2][0] = mapper[perm[3]][(orient[3]+1) % 3];
-  res[2][1] = mapper[perm[4]][(orient[4]+2) % 3];
+  res[2][0] = mapper[perm[4]][(orient[4]+1) % 3];
+  res[2][1] = mapper[perm[5]][(orient[5]+2) % 3];
   res[2][2] = mapper[perm[1]][(orient[1]+1) % 3];
   res[2][3] = mapper[perm[0]][(orient[0]+2) % 3];
 
-  res[3][0] = mapper[perm[4]][(orient[4]+1) % 3];
-  res[3][1] = mapper[perm[5]][(orient[5]+2) % 3];
+  res[3][0] = mapper[perm[5]][(orient[5]+1) % 3];
+  res[3][1] = mapper[perm[6]][(orient[6]+2) % 3];
   res[3][2] = mapper[perm[2]][(orient[2]+1) % 3];
   res[3][3] = mapper[perm[1]][(orient[1]+2) % 3];
 
-  res[4][0] = mapper[perm[5]][(orient[5]+1) % 3];
-  res[4][1] = mapper[perm[6]][(orient[6]+2) % 3];
-  res[4][2] = 4;
+  res[4][0] = mapper[perm[6]][(orient[6]+1) % 3];
+  res[4][1] = mapper[perm[7]][(orient[7]+2) % 3];
+  std::cout << perm[7] << " " << (orient[7]+2) % 3 << " " << mapper[perm[7]][(orient[7]+2) % 3] << std::endl;
+  res[4][2] = mapper[perm[3]][(orient[3]+1) % 3];
   res[4][3] = mapper[perm[2]][(orient[2]+2) % 3];
 
-  res[5][0] = mapper[perm[6]][orient[6]];
-  res[5][1] = mapper[perm[5]][orient[5]];
-  res[5][2] = mapper[perm[4]][orient[4]];
-  res[5][3] = mapper[perm[3]][orient[3]];
+  res[5][0] = mapper[perm[7]][orient[7]];
+  res[5][1] = mapper[perm[6]][orient[6]];
+  res[5][2] = mapper[perm[5]][orient[5]];
+  res[5][3] = mapper[perm[4]][orient[4]];
 
   return res;
 }
@@ -162,9 +224,9 @@ std::array<std::array<int, 4>, 6> Cube::toFacelet() {
  */
 void Cube::print() {
   std::array<std::array<int, 4>, 6> facelet = toFacelet();
-  for(int i = 0; i < 7; i++) std::cout << perm[i];
+  for(int i = 0; i < 8; i++) std::cout << perm[i];
   std::cout << std::endl;
-  for(int i = 0; i < 7; i++) std::cout << orient[i];
+  for(int i = 0; i < 8; i++) std::cout << orient[i];
   std::cout << std::endl;
   std::cout << "   *--*   " << std::endl;
   std::cout << "   |" << facelet[5][0] << facelet[5][1] << "|" << std::endl;
