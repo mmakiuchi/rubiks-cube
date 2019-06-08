@@ -487,31 +487,16 @@ void drawCube(std::array<std::array<int, 4>, 6> & cube_facelet, Marker marker)
 
 	if (marker_code == 90) {
 		showCube(cube_facelet, 2, 0, 1, 5, 3, 4);
-	}
-	else {
-		if (marker_code == 626) {
-			showCube(cube_facelet, 0, 3, 4, 1, 2, 5);
-		}
-		else {
-			if (marker_code == 1680) {
-				showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
-			}
-			else {
-				if (marker_code == 2884) {
-					showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
-				}
-				else {
-					if (marker_code == 7236) {
-						showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check the order of the sides
-					}
-					else {
-						if (marker_code == 4648) {
-							showCube(cube_facelet, 2, 0, 1, 5, 3, 4); //check
-						}
-					}
-				}
-			}
-		}
+	} else if (marker_code == 626) {
+		showCube(cube_facelet, 0, 3, 4, 1, 2, 5);
+	} else if (marker_code == 1680) {
+		showCube(cube_facelet, 4, 3, 5, 1, 0, 2);
+	} else if (marker_code == 2884) {
+		showCube(cube_facelet, 1, 0, 4, 5, 2, 3);
+	} else if (marker_code == 7236) {
+		showCube(cube_facelet, 3, 2, 5, 4, 0, 1);
+	} else if (marker_code == 4648) {
+		showCube(cube_facelet, 5, 2, 1, 4, 3, 0);
 	}
 
 
