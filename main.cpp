@@ -44,7 +44,7 @@ bool debugmode = false;
 bool balldebug = false;
 
 float resultTransposedMatrix[16];
-float snowmanLookVector[4];
+float lookVector[4];
 int towards = 0x005A;
 int towardsList[2] = { 0x005a, 0x0272 };
 int towardscounter = 0;
@@ -84,9 +84,9 @@ void multMatrix(float mat[16], float vec[4])
 {
 	for (int i = 0; i < 4; i++)
 	{
-		snowmanLookVector[i] = 0;
+		lookVector[i] = 0;
 		for (int j = 0; j < 4; j++)
-			snowmanLookVector[i] += mat[4 * i + j] * vec[j];
+			lookVector[i] += mat[4 * i + j] * vec[j];
 	}
 }
 
@@ -112,14 +112,12 @@ void moveBall(float mat[16])
 
 }
 
-void rotateToMarker(float thisMarker[16], float lookAtMarker[16], int markernumber)
+void rotateToMarker(float thisMarker[16], float lookAtMarker[16])
 {
 	float vector[3];
 	vector[0] = lookAtMarker[3] - thisMarker[3];
 	vector[1] = lookAtMarker[7] - thisMarker[7];
 	vector[2] = lookAtMarker[11] - thisMarker[11];
-
-	if (towards == markernumber) moveBall(lookAtMarker);
 
 	//normalize vector
 	float help = sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
@@ -127,26 +125,18 @@ void rotateToMarker(float thisMarker[16], float lookAtMarker[16], int markernumb
 	vector[1] /= help;
 	vector[2] /= help;
 
-	if (debugmode) std::cout << "Vector: " << vector[0] << ", " << vector[1] << ", " << vector[2] << std::endl;
-
 	float defaultLook[4] = { 1,0,0,0 };
 	multMatrix(thisMarker, defaultLook);
 
-	//normalize snowmanLookVector
-	help = sqrt(snowmanLookVector[0] * snowmanLookVector[0] + snowmanLookVector[1] * snowmanLookVector[1] + snowmanLookVector[2] * snowmanLookVector[2]);
-	snowmanLookVector[0] /= help;
-	snowmanLookVector[1] /= help;
-	snowmanLookVector[2] /= help;
+	//normalize lookVector
+	help = sqrt(lookVector[0] * lookVector[0] + lookVector[1] * lookVector[1] + lookVector[2] * lookVector[2]);
+	lookVector[0] /= help;
+	lookVector[1] /= help;
+	lookVector[2] /= help;
 
-	if (debugmode) std::cout << "SnowmanLookVector: " << snowmanLookVector[0] << ", " << snowmanLookVector[1] << ", " << snowmanLookVector[2] << std::endl;
-
-	float angle = ((float)(180.0 / M_PI)) * acos(vector[0] * snowmanLookVector[0] + vector[1] * snowmanLookVector[1] + vector[2] * snowmanLookVector[2]);
-	if ((vector[0] * snowmanLookVector[1] - vector[1] * snowmanLookVector[0]) < 0) angle *= -1;
-
-	if (debugmode) std::cout << "Angle: " << angle << std::endl;
-
-	glRotatef(angle, 0, 0, 1);
+	glTranslatef(lookVector[0]-vector[0], lookVector[1]-vector[1], lookVector[2]-vector[2]);
 }
+
 // Added in Exercise 9 - End *****************************************************************
 
 /* program & OpenGL initialization */
@@ -252,10 +242,19 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 	//glLoadTransposeMatrixf( resultMatrix );
 	glLoadMatrixf(resultTransposedMatrix);
 
+	/*for (int i = markers.size()-1; i >= 0; i--) {
+		glTranslatef(0, 0, -0.015);
+		drawCube(cube_facelet, markers.at(i));
+		glTranslatef(0, 0, 0.015);
+		if (i > 0)
+			rotateToMarker(markers.at(i).resultMatrix, markers.at(i-1).resultMatrix);
+	}*/
+
 	// draw the cube only if there is an identified marker
 	if (!markers.empty()) {
 		// send the cube side colors and the identified marker
-		drawCube(cube_facelet, markers.at(0));
+		glTranslatef(0, 0, -0.015);
+		drawCube(cube_facelet, markers.at(markers.size() - 1));
 	}
 		
 	// Added in Exercise 9 - Start *****************************************************************
