@@ -43,8 +43,6 @@ struct Position { double x, y, z; };
 bool debugmode = false;
 bool balldebug = false;
 
-float resultTransposedMatrix[16];
-float lookVector[4];
 int towards = 0x005A;
 int towardsList[2] = { 0x005a, 0x0272 };
 int towardscounter = 0;
@@ -78,66 +76,6 @@ void InitializeVideoStream(cv::VideoCapture& camera) {
 		}
 	}
 }
-
-// Added in Exercise 9 - Start *****************************************************************
-void multMatrix(float mat[16], float vec[4])
-{
-	for (int i = 0; i < 4; i++)
-	{
-		lookVector[i] = 0;
-		for (int j = 0; j < 4; j++)
-			lookVector[i] += mat[4 * i + j] * vec[j];
-	}
-}
-
-void moveBall(float mat[16])
-{
-	float vector[3];
-	vector[0] = mat[3] - (float)ballpos.x;
-	vector[1] = mat[7] - (float)ballpos.y;
-	vector[2] = mat[11] - (float)ballpos.z;
-
-	float length = sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
-	if (balldebug) std::cout << length << std::endl;
-	if (length < 0.01)
-	{
-		towards = towardsList[(towardscounter++) % 2];
-		if (balldebug) std::cout << "target changed to marker " << towards << std::endl;
-		ballspeed = 60 + 80 * rand() / RAND_MAX;
-		return;
-	}
-	ballpos.x += vector[0] / (ballspeed * length);
-	ballpos.y += vector[1] / (ballspeed * length);
-	ballpos.z += vector[2] / (ballspeed * length);
-
-}
-
-void rotateToMarker(float thisMarker[16], float lookAtMarker[16])
-{
-	float vector[3];
-	vector[0] = lookAtMarker[3] - thisMarker[3];
-	vector[1] = lookAtMarker[7] - thisMarker[7];
-	vector[2] = lookAtMarker[11] - thisMarker[11];
-
-	//normalize vector
-	float help = sqrt(vector[0] * vector[0] + vector[1] * vector[1] + vector[2] * vector[2]);
-	vector[0] /= help;
-	vector[1] /= help;
-	vector[2] /= help;
-
-	float defaultLook[4] = { 1,0,0,0 };
-	multMatrix(thisMarker, defaultLook);
-
-	//normalize lookVector
-	help = sqrt(lookVector[0] * lookVector[0] + lookVector[1] * lookVector[1] + lookVector[2] * lookVector[2]);
-	lookVector[0] /= help;
-	lookVector[1] /= help;
-	lookVector[2] /= help;
-
-	glTranslatef(lookVector[0]-vector[0], lookVector[1]-vector[1], lookVector[2]-vector[2]);
-}
-
-// Added in Exercise 9 - End *****************************************************************
 
 /* program & OpenGL initialization */
 void initGL(int argc, char* argv[])
@@ -212,50 +150,38 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 	glMatrixMode(GL_MODELVIEW);
 
 	// Added in Exercise 9 - Start *****************************************************************
-	//float resultMatrix_005A[16];
-	//float resultMatrix_0272[16];
-	float resultMatrix_anyMarker[16];
+	
+	float scale = SCALE;
 	for (int i = 0; i < markers.size(); i++) {
 		const int code = markers[i].code;
+		
+		float resultMatrix[16];
+		std::array<GLfloat, 16> tmp;
 		for (int j = 0; j < 16; j++)
-			resultMatrix_anyMarker[j] = markers[i].resultMatrix[j];
-		/*if (code == 0x005a) {
-			for (int j = 0; j < 16; j++)
-				resultMatrix_005A[j] = markers[i].resultMatrix[j];
-		}
-		else if (code == 0x0272) {
-			for (int j = 0; j < 16; j++)
-				resultMatrix_0272[j] = markers[i].resultMatrix[j];
-		}*/
-	}
+			resultMatrix[j] = markers[i].resultMatrix[j];
 
+		float resultTransposedMatrix[16];
+		for (int x = 0; x < 4; ++x)
+			for (int y = 0; y < 4; ++y)
+				resultTransposedMatrix[x * 4 + y] = resultMatrix[y * 4 + x];
 
-	for (int x = 0; x < 4; ++x)
-		for (int y = 0; y < 4; ++y)
-			resultTransposedMatrix[x * 4 + y] = resultMatrix_anyMarker[y * 4 + x];
-	// Added in Exercise 9 - End *****************************************************************
+		resultTransposedMatrix[12] *= scale;
+		resultTransposedMatrix[13] *= scale;
 
-  
-	float scale = SCALE;
-	resultTransposedMatrix[12] *= scale;
-	resultTransposedMatrix[13] *= scale;
-	//glLoadTransposeMatrixf( resultMatrix );
-	glLoadMatrixf(resultTransposedMatrix);
-
-	/*for (int i = markers.size()-1; i >= 0; i--) {
+		glLoadMatrixf(resultTransposedMatrix);
 		glTranslatef(0, 0, -0.015);
 		drawCube(cube_facelet, markers.at(i));
-		glTranslatef(0, 0, 0.015);
-		if (i > 0)
-			rotateToMarker(markers.at(i).resultMatrix, markers.at(i-1).resultMatrix);
-	}*/
+	}
+
+	
+	// Added in Exercise 9 - End *****************************************************************
 
 	// draw the cube only if there is an identified marker
-	if (!markers.empty()) {
+	/*if (!markers.empty()) {
 		// send the cube side colors and the identified marker
 		glTranslatef(0, 0, -0.015);
 		drawCube(cube_facelet, markers.at(markers.size() - 1));
-	}
+	}*/
 		
 	// Added in Exercise 9 - Start *****************************************************************
 	//rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
