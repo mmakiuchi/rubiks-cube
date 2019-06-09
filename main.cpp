@@ -19,6 +19,9 @@
 #include <opencv2/imgproc.hpp> // include image processing headers
 #include <opencv2/highgui.hpp> // include GUI-related headers
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
