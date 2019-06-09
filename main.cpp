@@ -19,20 +19,21 @@
 #include <opencv2/imgproc.hpp> // include image processing headers
 #include <opencv2/highgui.hpp> // include GUI-related headers
 
-
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
 #include "Cube.h"
 
+//#define _USE_MATH_DEFINES
+//#include <cmath>
 
 #define MARKER_SIZE 0.048 // size of AR marker [m]
 
 // change here for your PC configuration
-#define SCALE 0.45 //Mari
+//#define SCALE 0.45 //Mari
 //#define THRESH 138 // Mari
 //#define BW_THRESH 146 // Mari
-
+#define SCALE 0.3 // for OSX
 #define THRESH 87   // threshold for finding contours
 #define BW_THRESH 95    // threshold for getting values of AR marker
 
@@ -108,6 +109,52 @@ void initGL(int argc, char* argv[])
 	glEnable(GL_LIGHT0);
 }
 
+void printMatrix(float matrix[]){
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            std::cout << std::setw(6);
+            std::cout << std::setprecision(4);
+            std::cout << matrix[4 * i + j] << " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n";
+}
+
+int calcState(float tan_t){
+    if( -M_PI_4 <= tan_t && tan_t < M_PI_4){
+        return 0;
+    }else if(M_PI_4 <= tan_t && tan_t < M_PI*3/4){
+        return 1;
+    }else if(-M_PI*3/4 <= tan_t && tan_t < -M_PI_4){
+        return 3;
+    }else{
+        return 2;
+    }
+}
+
+void detectRotation(std::vector<Marker> & markers, int code, int state[]){
+    for (int i = 0; i < markers.size(); i++) {
+        float resultMatrix[16];
+        if(markers[i].code == code){
+            state[1] = state[0];
+            for (int j = 0; j < 16; j++)
+                resultMatrix[j] = markers[i].resultMatrix[j];
+            
+//            printMatrix(resultMatrix);
+            
+            float cos_t = resultMatrix[0];
+            float sin_t = resultMatrix[4];
+            float tan_t = atan2(sin_t, cos_t);
+//            std::cout << tan_t << std::endl;
+            
+            state[0] = calcState(tan_t);
+            
+//            std::cout << std::hex << std::uppercase <<code << ": [" << state[0] << ", " << state[1] << "]" << std::endl;
+        }
+    }
+}
+
 void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> & markers, std::array<std::array<int, 4>, 6> & cube_facelet)
 {
 	const auto camera_image_size = sizeof(unsigned char) * img_bgr.rows * img_bgr.cols * 3;
@@ -154,10 +201,10 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 	float scale = SCALE;
 	for (int i = 0; i < markers.size(); i++) {
 		const int code = markers[i].code;
-		
+        
 		float resultMatrix[16];
-		std::array<GLfloat, 16> tmp;
-		for (int j = 0; j < 16; j++)
+        std::array<GLfloat, 16> tmp;
+        for (int j = 0; j < 16; j++)
 			resultMatrix[j] = markers[i].resultMatrix[j];
 
 		float resultTransposedMatrix[16];
@@ -276,6 +323,9 @@ int main(int argc, char* argv[]) {
 	
 	// Prints the color representation
 	cube_model.print();
+    
+    // states of controller
+    int controller_506B[2] = {0, 0};
 	
 	//	float resultMatrix[16];
 		/* Loop until the user closes the window */
@@ -298,6 +348,19 @@ int main(int argc, char* argv[]) {
 //		cv::imshow("img_bgr", img_bgr);
 //		cv::waitKey(10); /// Wait for one sec.
 
+        // detect the rotation of the controller
+        detectRotation(markers, 0x506b, controller_506B);
+        
+        // turn Left
+        int rot_diff = controller_506B[0] - controller_506B[1];
+        if(rot_diff == 1 || rot_diff == -3){
+            cube_model.turnLeft(3);
+        }else if(rot_diff == -1 || rot_diff == 3){
+            cube_model.turnLeft(1);
+        }
+        
+        cube_model.print();
+        
 		/* Render here */
 		display(window, img_bgr, markers, facelet);
 
