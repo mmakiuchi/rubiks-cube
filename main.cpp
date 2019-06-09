@@ -377,7 +377,8 @@ int main(int argc, char* argv[]) {
             cube_model.turnFront(1);
         }
         
-        cube_model.print();
+//        cube_model.print();
+        facelet = cube_model.toFacelet();
         
 		/* Render here */
 		display(window, img_bgr, markers, facelet);
