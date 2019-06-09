@@ -18,10 +18,12 @@
 
 void trackbarHandler( int pos, void* slider_value ) {
 	*( (int*)slider_value ) = pos;
+    std::cout << "thresh: " << pos << std::endl;
 }
 
 void bw_trackbarHandler(int pos, void* slider_value ) {
 	*( (int*)slider_value ) = pos;
+    std::cout << "bw_thresh: " << pos << std::endl;
 }
 
 int MarkerTracker::subpixSampleSafe ( const cv::Mat &pSrc, const cv::Point2f &p )
@@ -79,7 +81,9 @@ void MarkerTracker::init()
 	cv::namedWindow(kWinName1, cv::WINDOW_AUTOSIZE);
     cv::namedWindow(kWinName2, cv::WINDOW_AUTOSIZE);
 	cv::namedWindow(kWinName3, cv::WINDOW_AUTOSIZE);
-	cv::namedWindow(kWinName4, 0 );
+	cv::namedWindow(kWinName4, 0);
+#else
+    cv::namedWindow(kWinName2, cv::WINDOW_AUTOSIZE);
 #endif
 	cv::resizeWindow("Marker", 120, 120 );
 
@@ -527,8 +531,9 @@ void MarkerTracker::findMarker( cv::Mat &image_bgr, std::vector<Marker> &markers
 	cv::imshow(kWinName1, image_bgr);
 	cv::imshow(kWinName2, image_gray_filtered);
 	int key = cv::waitKey(10);
+#else
+    cv::imshow(kWinName2, image_gray_filtered);
 #endif //MARKER_TRACKER_DEBUG
-	
 
 	//int key = cv::waitKey(-1);
 	//if (key == 27) exit(0);
