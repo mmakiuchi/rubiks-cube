@@ -326,6 +326,8 @@ int main(int argc, char* argv[]) {
     
     // states of controller
     int controller_506B[2] = {0, 0};
+    int controller_37CE[2] = {0, 0};
+    int controller_128F[2] = {0, 0};
 	
 	//	float resultMatrix[16];
 		/* Loop until the user closes the window */
@@ -350,6 +352,8 @@ int main(int argc, char* argv[]) {
 
         // detect the rotation of the controller
         detectRotation(markers, 0x506b, controller_506B);
+        detectRotation(markers, 0x37ce, controller_37CE);
+        detectRotation(markers, 0x128f, controller_128F);
         
         // turn Left
         int rot_diff = controller_506B[0] - controller_506B[1];
@@ -357,6 +361,20 @@ int main(int argc, char* argv[]) {
             cube_model.turnLeft(3);
         }else if(rot_diff == -1 || rot_diff == 3){
             cube_model.turnLeft(1);
+        }
+        
+        rot_diff = controller_37CE[0] - controller_37CE[1];
+        if(rot_diff == 1 || rot_diff == -3){
+            cube_model.turnUp(3);
+        }else if(rot_diff == -1 || rot_diff == 3){
+            cube_model.turnUp(1);
+        }
+        
+        rot_diff = controller_128F[0] - controller_128F[1];
+        if(rot_diff == 1 || rot_diff == -3){
+            cube_model.turnFront(3);
+        }else if(rot_diff == -1 || rot_diff == 3){
+            cube_model.turnFront(1);
         }
         
         cube_model.print();
