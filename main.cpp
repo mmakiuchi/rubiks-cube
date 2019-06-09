@@ -282,7 +282,7 @@ int main(int argc, char* argv[]) {
 
 	// initialize the window system
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(camera_width, camera_height, "Exercise 8 - Combine", NULL, NULL);
+	window = glfwCreateWindow(camera_width, camera_height, "Augmented Rubik's-cube", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
