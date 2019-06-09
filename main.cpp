@@ -19,16 +19,13 @@
 #include <opencv2/imgproc.hpp> // include image processing headers
 #include <opencv2/highgui.hpp> // include GUI-related headers
 
-#define _USE_MATH_DEFINES
-#include <cmath>
-
 #include "PoseEstimation.h"
 #include "MarkerTracker.h"
 #include "DrawPrimitives.h"
 #include "Cube.h"
 
-//#define _USE_MATH_DEFINES
-//#include <cmath>
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 #define MARKER_SIZE 0.048 // size of AR marker [m]
 
@@ -40,20 +37,6 @@
 #define THRESH 87   // threshold for finding contours
 #define BW_THRESH 95    // threshold for getting values of AR marker
 
-// Added in Exercise 9 - Start *****************************************************************
-
-struct Position { double x, y, z; };
-
-bool debugmode = false;
-bool balldebug = false;
-
-int towards = 0x005A;
-int towardsList[2] = { 0x005a, 0x0272 };
-int towardscounter = 0;
-Position ballpos;
-int ballspeed = 100;
-// Added in Exercise 9 - End *****************************************************************
-
 //camera settings
 #if __APPLE__
 const int camera_width = 1280;
@@ -63,7 +46,6 @@ const int camera_width = 640;
 const int camera_height = 480;
 #endif
 
-const int virtual_camera_angle = 30;
 unsigned char bkgnd[camera_width * camera_height * 3];
 
 void InitializeVideoStream(cv::VideoCapture& camera) {
@@ -85,12 +67,10 @@ void InitializeVideoStream(cv::VideoCapture& camera) {
 void initGL(int argc, char* argv[])
 {
 	// initialize the GL library
-	// Added in Exercise 8 - End *****************************************************************
 		// pixel storage/packing stuff
 	glPixelStorei(GL_PACK_ALIGNMENT, 1);// for glReadPixels
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // for glTexImage2D
 	glPixelZoom(1.0, -1.0);
-	// Added in Exercise 8 - End *****************************************************************
 		// enable and set colors
 	glEnable(GL_COLOR_MATERIAL);
 	glClearColor(0, 0, 0, 1.0);
@@ -160,7 +140,6 @@ void detectRotation(std::vector<Marker> & markers, int code, int state[]){
 
 void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> & markers, std::array<std::array<int, 4>, 6> & cube_facelet)
 {
-	const auto camera_image_size = sizeof(unsigned char) * img_bgr.rows * img_bgr.cols * 3;
 	auto background_buffer_size = sizeof(bkgnd);
 	memcpy(bkgnd, img_bgr.data, background_buffer_size);
 
@@ -199,14 +178,11 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 		// move to marker-position
 	glMatrixMode(GL_MODELVIEW);
 
-	// Added in Exercise 9 - Start *****************************************************************
 	
 	float scale = SCALE;
 	for (int i = 0; i < markers.size(); i++) {
-		const int code = markers[i].code;
         
 		float resultMatrix[16];
-        std::array<GLfloat, 16> tmp;
         for (int j = 0; j < 16; j++)
 			resultMatrix[j] = markers[i].resultMatrix[j];
 
@@ -223,39 +199,8 @@ void display(GLFWwindow * window, const cv::Mat & img_bgr, std::vector<Marker> &
 		drawCube(cube_facelet, markers.at(i));
 	}
 
-	
-	// Added in Exercise 9 - End *****************************************************************
-
-	// draw the cube only if there is an identified marker
-	/*if (!markers.empty()) {
-		// send the cube side colors and the identified marker
-		glTranslatef(0, 0, -0.015);
-		drawCube(cube_facelet, markers.at(markers.size() - 1));
-	}*/
-		
-	// Added in Exercise 9 - Start *****************************************************************
-	//rotateToMarker(resultMatrix_005A, resultMatrix_0272, 0x005a);
-
-	//drawSnowman();
-
-	//for (int x = 0; x < 4; ++x)
-		//for (int y = 0; y < 4; ++y)
-			//resultTransposedMatrix[x * 4 + y] = resultMatrix_0272[y * 4 + x];
-
-
-	//glLoadMatrixf(resultTransposedMatrix);
-
-	//rotateToMarker(resultMatrix_0272, resultMatrix_005A, 0x0272);
-
-	//drawSnowman();
-
 	int key = cv::waitKey(10);
 	if (key == 27) exit(0);
-	// Added in Exercise 9 - Start *****************************************************************
-	else if (key == 100) debugmode = !debugmode;
-	else if (key == 98) balldebug = !balldebug;
-	// Added in Exercise 9 - End *****************************************************************
-
 }
 
 void reshape(GLFWwindow * window, int width, int height) {

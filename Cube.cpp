@@ -208,7 +208,7 @@ std::array<std::array<int, 4>, 6> Cube::toFacelet() {
 
   res[4][0] = mapper[perm[6]][(orient[6]+1) % 3];
   res[4][1] = mapper[perm[7]][(orient[7]+2) % 3];
-  std::cout << perm[7] << " " << (orient[7]+2) % 3 << " " << mapper[perm[7]][(orient[7]+2) % 3] << std::endl;
+//  std::cout << perm[7] << " " << (orient[7]+2) % 3 << " " << mapper[perm[7]][(orient[7]+2) % 3] << std::endl;
   res[4][2] = mapper[perm[3]][(orient[3]+1) % 3];
   res[4][3] = mapper[perm[2]][(orient[2]+2) % 3];
 
